@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style type="text/css">
+		body,p{margin: 0; background: black;}
+		.ticker{position: absolute;overflow: hidden;}
+		#ticker1{
+			left: 0px;top: 3rem;
+			width: 400px;height: 3rem;
+			font-size: 2rem;line-height: 3.3rem;
+			background: red;color: white;
+		}
+
+		#ticker2{
+			left: 400px;top: 1.5rem;
+			width: 400px;height: 3rem;
+			font-size: 2rem;line-height: 3.3rem;
+			background: blue;color: white;
+		}
+
+		#ticker3{
+			left: 800px;top: 0rem;
+			width: 400px;height: 3rem;
+			font-size: 2rem;line-height: 3.3rem;
+			background: red;color: white;
+		}
+
+		#ticker4{
+			left: 0px;top: 7.5rem;
+			width: 400px;height: 3rem;
+			font-size: 2rem;line-height: 3.3rem;
+			background: red;color: white;
+		}
+
+		#ticker5{
+			left: 400px;top: 6rem;
+			width: 400px;height: 3rem;
+			font-size: 2rem;line-height: 3.3rem;
+			background: blue;color: white;
+		}
+
+		#ticker6{
+			left: 800px;top: 4.5rem;
+			width: 400px;height: 3rem;
+			font-size: 2rem;line-height: 3.3rem;
+			background: red;color: white;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="ticker1" class="ticker" data-speed="1" data-gap="480"><p><span>웹코딩의 치트키! 티커를 배워보는 시간을 가집니다. 웹코딩의 치트키! 티커를 배워보는 시간을 가집니다.</span></p></div>
+
+	<div id="ticker2" class="ticker" data-speed="1" data-gap="240"><p>
+	<span>웹코딩의 치트키! 티커를 배워보는 시간을 가집니다.</span></p></div>
+
+	<div id="ticker3" class="ticker" data-speed="1" data-gap="0"><p>
+	<span>웹코딩의 치트키! 티커를 배워보는 시간을 가집니다.</span></p></div>
+
+	<div id="ticker4" class="ticker" data-speed="5" data-gap="480"><p><span>웹코딩의 치트키! 티커를 배워보는 시간을 가집니다.</span></p></div>
+
+	<div id="ticker5" class="ticker" data-speed="5" data-gap="240"><p>
+	<span>웹코딩의 치트키! 티커를 배워보는 시간을 가집니다.</span></p></div>
+
+	<div id="ticker6" class="ticker" data-speed="5" data-gap="0"><p>
+	<span>웹코딩의 치트키! 티커를 배워보는 시간을 가집니다.</span></p></div>
+<script type="text/javascript">
+	bhTicker("ticker",2);
+
+function bhTicker(cl,speed) {
+	let t = document.getElementsByClassName(cl);
+	let ta = []; let ts=[]; let tg=[]; let tw=[];
+	let container,mover,text,textWidth;
+
+	for(let i=0; i<t.length; i++){
+		container = t[i];
+		mover = container.getElementsByTagName("p").item(0);
+		text = mover.getElementsByTagName("span").item(0);
+
+		// set
+		mover.style.position = "absolute";
+		mover.style.margin = "0 0 0 0";
+		mover.style.left = "0px";
+		mover.leftPosition = 0;
+		mover.style.width = text.childNodes.item(0).length + "em";	// stretch width
+		textWidth = text.offsetWidth;
+
+		let speed2 = t[i].dataset.speed;
+		if (textWidth > container.offsetWidth) {
+			if(speed2 == 1){speed2 = 2};
+			mover.style.width = textWidth * speed2 + "px";
+			
+			for(let k=0;k<speed2;k++){
+				mover.innerHTML += mover.innerHTML;	
+			}
+		}
+
+		tw.push(textWidth);
+		tg.push(t[i].dataset.gap);
+		ts.push(t[i].dataset.speed);
+		ta.push(mover);
+	}
+
+	let tickerAction = function() {
+		for(let j=0;j<ta.length;j++){
+			let speed = parseInt(ts[j]);
+			let gap = parseInt(tg[j]);
+			let tw2 = tw[j];
+
+			if (ta[j].leftPosition * -speed > tw2*speed) {
+				ta[j].leftPosition = -speed;
+			} else {
+				ta[j].leftPosition -= speed;
+			}
+
+			ta[j].style.left = (-gap + ta[j].leftPosition) + "px";
+		}
+		window.requestAnimationFrame(tickerAction);
+	};
+	tickerAction();
+}
+</script>
+</body>
+</html>
